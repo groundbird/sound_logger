@@ -10,13 +10,13 @@ logging and reading GB usb_microphone
 
 ## Logging program
 - `sound_logger.py`
-The main program of logging.
-It runs by crontab in momo-pi.
-`00 * * * * python3 /home/gb/logger/sound_logger/sound_logger.py >>/home/gb/logger/sound_logger/sound_logger.log`
+The main program of logging. \
+It runs by crontab in momo-pi. \
+`00 * * * * python3 /home/gb/logger/sound_logger/sound_logger.py >>/home/gb/logger/sound_logger/sound_logger.log` \ 
 
-the data is compressed by `xz` by using `bdata_xz_compress.py`
-It runs by crontab in momo-pi.
-`0-59/10 * * * * /usr/bin/nice /usr/bin/python3 /home/gb/logger/bdata_xz_compress/bdata_xz_compress.py >/dev/null 2>&1`
+the data is compressed by `xz` by using `bdata_xz_compress.py` \
+It runs by crontab in momo-pi. \ 
+`0-59/10 * * * * /usr/bin/nice /usr/bin/python3 /home/gb/logger/bdata_xz_compress/bdata_xz_compress.py >/dev/null 2>&1` \
 
 ## Status check program
 - look plots
