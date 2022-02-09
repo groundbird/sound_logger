@@ -2,7 +2,6 @@
 '''Module to read sound encoder data
 '''
 import numpy as np
-import matplotlib.pyplot as plt
 import datetime
 from pathlib import Path
 import lzma
@@ -10,6 +9,7 @@ import wave # need install for reading wave format file
 from scipy import fromstring, int16
 from scipy.signal import welch
 import re
+import sys
 
 FR = 44100 #Hz
 DATADIR = '/data/gb/logbdata/sound/'
@@ -93,7 +93,7 @@ def _region_to_paths(dt_start, dt_end, fname_format):
 
 
 class SoundData():
-    def __init__(self, path, nseg = 16, loginfo = False):
+    def __init__(self, path, nseg = 16, loginfo = True):
         self._path = Path(path)
         fmt = '_%Y-%m%d-%H%M%S%z'
         self.file_time = datetime.datetime.strptime(str(self._path).split('/')[-1].split('.')[0], fmt)
@@ -116,6 +116,7 @@ class SoundData():
         if self.loginfo:
             # get other logdata
             ## dome
+            sys.path.append('/data/sueno/home/workspace/script')
             from logreader.dome_data import DomeData
             pathd = _region_to_paths(self.file_time, self.file_time, DOME_FMT)
             datads = [DomeData(ipath) for ipath in pathd]
@@ -160,7 +161,8 @@ class SoundData():
 
 
         
-    def plot(self):
+    def plot(self, save = False):
+        import matplotlib.pyplot as plt
         fig, ax = plt.subplots(2,1, figsize = (10,8))
 
         ax[0].plot(self.time, self.amp)
@@ -175,3 +177,21 @@ class SoundData():
         else:
             ax[0].set_title('Date : ' +  datetime.datetime.strftime(self.file_time, '%Y-%m%d-%H%M%S'))
         plt.tight_layout()
+
+        if save:
+            import os
+            if not os.path.isdir('./fig'):
+                os.mkdir('fig')
+            plt.savefig('fig/' + datetime.datetime.strftime(self.file_time, '%Y-%m%d-%H%M%S') + '.jpg')
+
+
+
+if __name__ == '__main__' :
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument('-p', '--path', type=str, help='data path', default='/data/gb/logbdata/sound/2022/02/01/_2022-0201-000001+0000.wav.xz')
+    
+    args = parser.parse_args()
+
+    sd = SoundData(args.path)
+    sd.plot(save = True)

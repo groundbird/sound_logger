@@ -80,7 +80,7 @@ def _region_to_paths(dt_start, dt_end, fname_format):
     return paths
 
 class SoundReader():
-    def __init__(self, start, end, timeformat = None, nseg = 16, loginfo = False):
+    def __init__(self, start, end, timeformat = None, nseg = 16, loginfo = True):
         """
         Parameters
         ----------
