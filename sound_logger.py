@@ -27,7 +27,6 @@ class SoundLogger:
             print('lock file:' + self.lockpath)
 
         self.__FILE_PATH = self.__OUTPUT_PATH + '/' + self.__FNAME_FORMAT
-#        print(self.__FILE_PATH)
         if self.__VERBOSE:
             print('sounf file:' + self.__FILE_PATH)
 
@@ -39,9 +38,6 @@ class SoundLogger:
         if self.__VERBOSE: print(self.fname)
 
         cmd = 'arecord --device plughw:' + str(self.dev_card) + ' -r ' + str(self.sampling_rate) + ' -d ' + str(self.duration) + ' -f S16_LE ' + self.fname
-        #cmd = 'ls' + ' -al'
-        print('-----------command---------')
-        print(cmd)
         os.system(cmd)
         pass
 
@@ -58,10 +54,6 @@ class SoundLogger:
         # save start
         self.write_to_wav()
         sleep(self.duration + int(10))
-#        fcntl.flock(lockf.fileno(), fcntl.LOCK_UN)
-#        lockf.close()
-
-
             
 def main():
     from argparse import ArgumentParser
