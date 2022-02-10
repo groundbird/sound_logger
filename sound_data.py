@@ -157,7 +157,7 @@ class SoundData():
                         self.ang[i] = iang+360
                     else:
                         pass
-                self.rpm = (self.ang[-1] - self.ang[0]) * 20
+                self.rpm = round(((self.ang[-1] - self.ang[0]) * 20)/360)
 
 
         
