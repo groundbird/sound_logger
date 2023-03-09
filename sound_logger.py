@@ -3,7 +3,7 @@ from os import makedirs
 from os.path import isdir, join, exists
 import fcntl
 from time import sleep, strftime
-
+import sys
 
 VERBOSE = False
 DEBUG_MODE = False
@@ -38,6 +38,7 @@ class SoundLogger:
         if self.__VERBOSE: print(self.fname)
 
         cmd = 'arecord --device plughw:' + str(self.dev_card) + ' -r ' + str(self.sampling_rate) + ' -d ' + str(self.duration) + ' -f S16_LE ' + self.fname
+        print(cmd)
         os.system(cmd)
         pass
 
@@ -53,7 +54,10 @@ class SoundLogger:
             exit(1)
         # save start
         self.write_to_wav()
+        # wait for save
         sleep(self.duration + int(10))
+        sys.exit("save duration is finished")
+
             
 def main():
     from argparse import ArgumentParser
