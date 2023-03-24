@@ -6,8 +6,8 @@ import datetime
 from pathlib import Path
 import lzma
 import wave # need install for reading wave format file
-from scipy import fromstring, int16
-from scipy.signal import welch
+#from scipy import fromstring, int16
+#from scipy.signal import welch
 import re
 import sys
 
@@ -36,7 +36,8 @@ def _read_wav(path, out = False):
 
     data = wr.readframes(wr.getnframes())
     wr.close()
-    amp = fromstring(data, dtype=int16)
+    #amp = fromstring(data, dtype=int16)
+    amp = np.fromstring(data, dtype=np.int16)    
     time = np.arange(0, fn/fr, 1/fr)
     return amp, time, fr
 

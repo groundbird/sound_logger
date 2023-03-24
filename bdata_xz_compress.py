@@ -6,6 +6,7 @@ from datetime import datetime as dt
 import fcntl
 
 TIME_THRESHOLD = 3600. # 1 hour
+TIME_THRESHOLD = 120. # 2min
 LOCK_FILE = '/home/gb/logger/sound_logger/.bdata_xz_compress.lock'
 DATADIRS = [
     '/data/gb/logbdata/',

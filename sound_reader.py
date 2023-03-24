@@ -4,9 +4,11 @@ import datetime
 from os import listdir
 import wave # for wave
 import struct
-from scipy import fromstring, int16
-from scipy.signal import welch
-from .sound_data import SoundData
+#from scipy import fromstring, int16
+#from scipy.signal import welch
+import sys
+sys.path.append('/home/gb/logger/sound_logger/')
+from sound_data import SoundData
 import re
 
 FR = 44100 #Hz

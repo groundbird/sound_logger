@@ -2,3 +2,5 @@
 fig/
 subdata/
 .*
+__pycache__/*
+*~

@@ -63,7 +63,8 @@ def main():
     from argparse import ArgumentParser
     dev_card = 1
     sampling_rate = 44100
-    duration = 60
+    #duration = 60
+    duration = 30
     
     parser = ArgumentParser()
     parser.add_argument('-dcard', '--dev_card', type=int, help='device card', default=dev_card)
