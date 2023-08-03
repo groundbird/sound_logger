@@ -13,7 +13,7 @@ import re
 
 FR = 44100 #Hz
 DATADIR = '/data/gb/logbdata/sound/'
-SOUND_FMT = '/data/gb/logbdata/sound/%Y/%m/%d/_%Y-%m%d-%H%M%S+0000.wav.xz'
+SOUND_FMT = '/data/gb/logbdata/sound/%Y/%m/%d/_%Y-%m%d-%H%M%S%z.wav.xz'
 
 def _readtime(str_time, timeformat = None):
     """

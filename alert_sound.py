@@ -23,18 +23,19 @@ from sound_data import _read_wav
 address_list_file = join(dirname(abspath(__file__)), 'mail_address_list.conf')
 server_name = 'Ringo-pi'
 
-SOUND_FMT = '/home/gb/logger/bdata/sound/%Y/%m/%d/_%Y-%m%d-%H%M%S+0000.wav.xz'
+#SOUND_FMT = '/home/gb/logger/bdata/sound/%Y/%m/%d/_%Y-%m%d-%H%M%S%z.wav.xz'
+SOUND_FMT = '/home/gb/logger/bdata/sound/%Y/%m/%d/%Y-%m%d-%H%M%S.wav.xz'
 
 output_path = '/home/gb/logger/bdata/sound/%Y/%m/%d/_%Y-%m%d_sound.alert'
-TIMEFORMAT = '%Y%m%d-%H'
-#THRESHOLD1 = 8000
-THRESHOLD1 = 10000
-THRESHOLD2 = 15000
+TIMEFORMAT = '%Y%m%d-%H%M%S'
+THRESHOLD1 = 5000
+THRESHOLD2 = 8000
+
 
 lockfile = '/home/gb/.gb_lock/alert_sound.lock'
 sockfile = '/home/gb/.gb_sock/alert_sound.sock'
 
-INTERVAL_READ = 1800. # sec
+INTERVAL_READ = 600. # sec
 CNT_FREEZE_MAX = 10
 
 class SoundAlert(Base):
@@ -90,13 +91,15 @@ class SoundAlert(Base):
 
     def control(self):
         print('--start control--')
+        print(self.path)
         if self.path is None:
             st = datetime.datetime.now(tz=datetime.timezone.utc).strftime(TIMEFORMAT)
             self.dt_start = _readtime(st, TIMEFORMAT)
             self.dt_end   = _readtime(st, TIMEFORMAT)
+            print(self.dt_start)
+            print(self.dt_end)            
             self.path = _region_to_paths(self.dt_start, self.dt_end, SOUND_FMT)[0]
 
-        print(self.path)
         if self.path.suffix == '.xz':
             self._fd = lzma.open(str(self.path), 'rb')
         else:
@@ -108,25 +111,26 @@ class SoundAlert(Base):
         flag2 = (THRESHOLD2 < np.abs(self.amp))
         len_True2 = len(self.amp[flag2])
 
-        #print('Maximum amplitude = {}'.format(np.max(self.amp)))
-        #print('Length of data over threshold1 = {}'.format(len_True1))
-        #print('Length of data over threshold2 = {}'.format(len_True2))        
-        #print('Standard deviation of amplitude = {}'.format(np.std(self.amp)))
+        print('Maximum amplitude = {}'.format(np.max(self.amp)))
+        print('Length of data over threshold1 = {}'.format(len_True1))
+        print('Length of data over threshold2 = {}'.format(len_True2))        
+        print('Standard deviation of amplitude = {}'.format(np.std(self.amp)))
 
-        datestr = self.path.name.split('.')[0].split('_')[1]
-        date = datetime.datetime.strptime(datestr, '%Y-%m%d-%H%M%S+0000')
-
+        datestr = self.path.name.split('.')[0]
+        date = datetime.datetime.strptime(datestr, '%Y-%m%d-%H%M%S')
         
         if len_True2 > 0:
             text = 'Sound_alert'
             level = 2
             self.send_alert(text, threshold = THRESHOLD2, data_len=len_True2, now=date, level=level)
-            print('====send email====')
+            print('====send email with alert level2====')
+            pass
         elif len_True1 > 0:
             text = 'Sound_alert'            
             level = 1
             self.send_alert(text, threshold = THRESHOLD1, data_len=len_True1, now=date, level=level)
-            print('====send email====')
+            print('====send email with alert level1====')
+            pass
         else:
             pass
 
@@ -134,6 +138,7 @@ class SoundAlert(Base):
         print('====start run=====')
         try:
             while True:
+#                st = time.strftime(TIMEFORMAT)
                 st = datetime.datetime.now(tz=datetime.timezone.utc).strftime(TIMEFORMAT)
                 self.dt_start = _readtime(st, TIMEFORMAT)
                 self.path = _region_to_paths(self.dt_start, self.dt_start, SOUND_FMT)[0]

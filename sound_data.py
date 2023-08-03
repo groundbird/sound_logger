@@ -11,7 +11,8 @@ import wave # need install for reading wave format file
 import re
 import sys
 
-FR = 44100 #Hz
+#FR = 44100 #Hz
+FR = 44000 #Hz
 DATADIR = '/data/gb/logbdata/sound/'
 DOME_FMT = '/data/gb/logdata/dome/%Y/%m/%Y%m%d_dome.dat'
 PTC_FMT = '/data/gb/logdata/ptc/%Y/%m/%Y%m%d.dat'

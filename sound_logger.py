@@ -4,6 +4,7 @@ from os.path import isdir, join, exists
 import fcntl
 from time import sleep, strftime
 import sys
+import datetime
 
 VERBOSE = False
 DEBUG_MODE = False
@@ -21,12 +22,17 @@ class SoundLogger:
         self.__VERBOSE = verbose 
         ## file name
         self.__OUTPUT_PATH  = ROOT_DIR + '/sound/%Y/%m/%d'
-        self.__FNAME_FORMAT = '_%Y-%m%d-%H%M%S+0000.wav'
+        #self.__FNAME_FORMAT = '_%Y-%m%d-%H%M%S+0000.wav'
+        #self.__FNAME_FORMAT = '_%Y-%m%d-%H%M%S%z.wav'
+        utcnow = datetime.datetime.now(tz=datetime.timezone.utc)
+        #p = f'{utcnow.year:04}-{utcnow.month:02}{utcnow.day:02}-{utcnow.hour:02}{utcnow.minute:02}{utcnow.second:02}.wav'
+        p = '{:04d}-{:02d}{:02d}-{:02d}{:02d}{:02d}.wav'.format(utcnow.year, utcnow.month, utcnow.day, utcnow.hour,utcnow.minute, utcnow.second)
         self.lockpath = '/home/gb/.gb_lock/'+'sound.lock'
         if self.__VERBOSE:
             print('lock file:' + self.lockpath)
 
-        self.__FILE_PATH = self.__OUTPUT_PATH + '/' + self.__FNAME_FORMAT
+        #self.__FILE_PATH = self.__OUTPUT_PATH + '/' + self.__FNAME_FORMAT
+        self.__FILE_PATH = self.__OUTPUT_PATH + '/' + p
         if self.__VERBOSE:
             print('sounf file:' + self.__FILE_PATH)
 
@@ -64,7 +70,7 @@ def main():
     dev_card = 1
     sampling_rate = 44100
     #duration = 60
-    duration = 30
+    duration = 15    
     
     parser = ArgumentParser()
     parser.add_argument('-dcard', '--dev_card', type=int, help='device card', default=dev_card)
