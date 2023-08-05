@@ -4,3 +4,4 @@ subdata/
 .*
 __pycache__/*
 *~
+check_sum/output

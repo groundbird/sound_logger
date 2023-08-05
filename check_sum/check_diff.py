@@ -6,7 +6,7 @@ import subprocess
 import numpy as np
 import time
 RINGO_SOUNDDIR = '/home/gb/logger/bdata/sound/'
-D_THRE = -31
+D_THRE = -30
 KAKAPO_SOUNDDIR ='/data.local/gb/logbdata/sound/'
 
 def get_checksum(filename):
@@ -56,7 +56,18 @@ def get_checksum_remote(path):
         else:
             break
     return output
-    
+
+def delete_file(path):
+    if os.path.exists(path):
+        os.system('rm ' + path)
+    else:
+        pass
+
+def delete_dir(dire):
+    if os.path.exists(dire):
+        os.system('rm -rf ' + dire)
+    else:
+        pass
 
 def main():
     paths, check_sums = get_oldest_daydir_local()
@@ -66,6 +77,35 @@ def main():
     bool_arr = np.array(remote_checksums) == np.array(check_sums)
     print(bool_arr)
     print(np.all(bool_arr))
+    if np.all(bool_arr):
+        print("==================== delete local dir below =================")
+        dire = '/'.join(paths[0].split('/')[:-1])
+        print(dire)
+        delete_dir(dire)
+    else:
+        print("==================== delete local paths below =================")                    
+        for ipath in paths[bool_arr]:
+            print(ipath)
+            delete_file(ipath)
+
+    # save output
+    date_str = ''.join(paths[0].split('/')[-4:-1])
+    print(date_str)
+    save_path = './output/' + date_str + '.log'
+    with open(save_path, 'w') as f:
+        wrt = '====== check sum output ===== \n'
+        wrt += 'Date : '
+        wrt += date_str + '\n'
+        if np.all(bool_arr):
+            wrt += 'All datas have same checksum. So directory of the date above is deleted. \n'
+            f.write(wrt)
+        else:
+            wrt += 'All datas do not have same checksum. So only paths below which have same checksum are deleted. \n'
+            f.write(wrt)            
+            f.writelines(paths[bool_arr])
+            
 
 if __name__ == "__main__":
     main()
+    #path = '/home/gb/logger/sound_logger/check_sum/hoge.log'
+    #delete_file(path)

@@ -21,11 +21,12 @@ class SoundLogger:
 
         self.__VERBOSE = verbose 
         ## file name
-        self.__OUTPUT_PATH  = ROOT_DIR + '/sound/%Y/%m/%d'
+        #self.__OUTPUT_PATH  = ROOT_DIR + '/sound/%Y/%m/%d'
         #self.__FNAME_FORMAT = '_%Y-%m%d-%H%M%S+0000.wav'
         #self.__FNAME_FORMAT = '_%Y-%m%d-%H%M%S%z.wav'
         utcnow = datetime.datetime.now(tz=datetime.timezone.utc)
         #p = f'{utcnow.year:04}-{utcnow.month:02}{utcnow.day:02}-{utcnow.hour:02}{utcnow.minute:02}{utcnow.second:02}.wav'
+        self.__OUTPUT_PATH  = ROOT_DIR + '/sound/{:04d}/{:02d}/{:02d}'.format(utcnow.year, utcnow.month, utcnow.day)
         p = '{:04d}-{:02d}{:02d}-{:02d}{:02d}{:02d}.wav'.format(utcnow.year, utcnow.month, utcnow.day, utcnow.hour,utcnow.minute, utcnow.second)
         self.lockpath = '/home/gb/.gb_lock/'+'sound.lock'
         if self.__VERBOSE:
