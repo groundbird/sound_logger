@@ -91,7 +91,7 @@ def main():
     # save output
     date_str = ''.join(paths[0].split('/')[-4:-1])
     print(date_str)
-    save_path = './output/' + date_str + '.log'
+    save_path = '/home/gb/logger/sound_logger/check_sum/output/' + date_str + '.log'
     with open(save_path, 'w') as f:
         wrt = '====== check sum output ===== \n'
         wrt += 'Date : '
