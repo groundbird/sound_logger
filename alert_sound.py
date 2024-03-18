@@ -20,6 +20,9 @@ from logger_base.base import Base
 from sound_reader import DATADIR,  _readtime, _region_to_paths
 from sound_data import _read_wav
 
+from obs_status import check_az, check_dome
+
+
 address_list_file = join(dirname(abspath(__file__)), 'mail_address_list.conf')
 server_name = 'Ringo-pi'
 
@@ -79,6 +82,16 @@ class SoundAlert(Base):
             body += 'Threshold = {}'.format(threshold) + '\n'
         if data_len is not None:
             body += 'The number of data over threshold = {}'.format(data_len)
+
+        # check az info
+        azdate, azval, azspd = check_az()
+        body += '\n Azimuth information \n date:{}, az={}, spd={}'.format(azdate, azval, azspd)
+
+        # check dome info
+        dome_info = check_dome()
+        body += '\n Dome information \n'
+        body += dome_info
+
         self.alert('bme280_dome_enclosure@gmail.com', to_addrs, body,
                    level=level, name= "Sound Logger",server_name=server_name)
 
@@ -92,6 +105,13 @@ class SoundAlert(Base):
 
     def control(self):
         print('--start control--')
+
+        print('==check azinfo==')
+        azdate, azval, azspd = check_az()
+        if azspd < 0.8:
+            print('No rotation : {}rpm'.format(azspd))
+            return
+        
         print(self.path)
         if self.path is None:
             st = datetime.datetime.now(tz=datetime.timezone.utc).strftime(TIMEFORMAT)
@@ -170,6 +190,7 @@ if __name__ == "__main__":
                           sock_file = sockfile,
                           interval_read = INTERVAL_READ)
     #sdalert.control()
+    #sdalert.send_alert(body = 'test')
     sdalert.run()
     
                 
