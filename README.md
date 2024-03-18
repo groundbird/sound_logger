@@ -64,10 +64,12 @@ sr = SoundReader(st, en, timeformat=fmt, loginfo=True)
 ```
 `self.datas` : list of SoundData class.
 
-# Alert system
+## Alert system
 ### `alert_sound.py`
-Module for sound alert system. This is excuted by crontab `/usr/bin/python3 /home/gb/logger/sound_logger/alert_sound.py`.\
-If Rotation speed is less than 0.8 RPM, alert email is not issued.\
+Module for sound alert system. This is excuted by crontab \
+`/usr/bin/python3 /home/gb/logger/sound_logger/alert_sound.py`. \
+If Rotation speed is less than 0.8 RPM, alert email is not issued.
+
 - Two thresholds are used. These values can be changed on situation (e.g. windy, dome close/open).
   - Alert : 5000
   - Emergency : 8000
