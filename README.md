@@ -3,7 +3,7 @@ sound_logger
 logging and reading GB usb_microphone
 
 ## Data directiory
-- dodo and momo-pi:
+- dodo and ringo-pi:
     /home/gb/logger/bdata/sound/
 - dodo and other servers for analysis:
     /data/gb/logbdata/sound
@@ -12,7 +12,7 @@ logging and reading GB usb_microphone
 - `sound_logger.py`
 The main program of logging. \
 It runs by crontab in ringo-pi. \
-`00 * * * * python3 /home/gb/logger/sound_logger/sound_logger.py >>/home/gb/logger/sound_logger/sound_logger.log` \ 
+`00,10,20,30,40,50 * * * * /usr/bin/python3 /home/gb/logger/sound_logger/sound_logger.py -sr 44000`\
 
 the data is compressed by `xz` by using `bdata_xz_compress.py` \
 It runs by crontab in momo-pi. \ 
@@ -24,14 +24,14 @@ It runs by crontab in momo-pi. \
     - save fig under `./fig/`
 
 - listen sound
-    - coming soon.
+    - Via `samesan`
+    - `@samesan sound` or `@samesan sound 20240117-130000`(change date as you want)
 
 ## Reading program
 ### `sound_data.py`
 Module to read the sound data with path.
 
 - to read the data from the path `/data/gb/logbdata/sound/2022/02/01/2022-0201-000001.wav.xz`
-example for jupyter.
 ```
 from sound_logger.sound_data import SoundData
 path = '/data/gb/logbdata/sound/2022/02/01/2022-0201-000001.wav.xz'
@@ -55,7 +55,6 @@ The SoundData class has some information below.
 Module to read the sound data with start and end time.
 
 - to read the data from '2022-0204-000000' to '2022-0204-110000'.
-example for jupyter.
 ```
 from sound_logger.sound_reader import SoundReader
 st = '2022-0204-000000'
@@ -64,3 +63,11 @@ fmt = '%Y-%m%d-%H%M%S'
 sr = SoundReader(st, en, timeformat=fmt, loginfo=True)
 ```
 `self.datas` : list of SoundData class.
+
+# Alert system
+### `alert_sound.py`
+Module for sound alert system. This is excuted by crontab `/usr/bin/python3 /home/gb/logger/sound_logger/alert_sound.py`.\
+If Rotation speed is less than 0.8 RPM, alert email is not issued.\
+- Two thresholds are used. These values can be changed on situation (e.g. windy, dome close/open).
+  - Alert : 5000
+  - Emergency : 8000
