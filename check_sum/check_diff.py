@@ -6,7 +6,8 @@ import subprocess
 import numpy as np
 import time
 RINGO_SOUNDDIR = '/home/gb/logger/bdata/sound/'
-D_THRE = -30
+#D_THRE = -30
+D_THRE = -20
 KAKAPO_SOUNDDIR ='/data.local/gb/logbdata/sound/'
 
 def get_checksum(filename):

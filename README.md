@@ -11,7 +11,7 @@ logging and reading GB usb_microphone
 ## Logging program
 - `sound_logger.py`
 The main program of logging. \
-It runs by crontab in momo-pi. \
+It runs by crontab in ringo-pi. \
 `00 * * * * python3 /home/gb/logger/sound_logger/sound_logger.py >>/home/gb/logger/sound_logger/sound_logger.log` \ 
 
 the data is compressed by `xz` by using `bdata_xz_compress.py` \
@@ -20,7 +20,7 @@ It runs by crontab in momo-pi. \
 
 ## Status check program
 - look plots
-    - `python3 sound_data.py -p /data/gb/logbdata/sound/2022/02/01/_2022-0201-000001+0000.wav.xz`
+    - `python3 sound_data.py -p /data/gb/logbdata/sound/2022/02/01/2022-0201-000001.wav.xz`
     - save fig under `./fig/`
 
 - listen sound
@@ -30,11 +30,11 @@ It runs by crontab in momo-pi. \
 ### `sound_data.py`
 Module to read the sound data with path.
 
-- to read the data from the path `/data/gb/logbdata/sound/2022/02/01/_2022-0201-000001+0000.wav.xz`
+- to read the data from the path `/data/gb/logbdata/sound/2022/02/01/2022-0201-000001.wav.xz`
 example for jupyter.
 ```
 from sound_logger.sound_data import SoundData
-path = '/data/gb/logbdata/sound/2022/02/01/_2022-0201-000001+0000.wav.xz'
+path = '/data/gb/logbdata/sound/2022/02/01/2022-0201-000001.wav.xz'
 sd = SoundData(path, nseg = 16, loginfo=True)
 sd.plot()
 ```

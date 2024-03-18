@@ -28,10 +28,10 @@ SOUND_FMT = '/home/gb/logger/bdata/sound/%Y/%m/%d/%Y-%m%d-%H%M%S.wav.xz'
 
 output_path = '/home/gb/logger/bdata/sound/%Y/%m/%d/_%Y-%m%d_sound.alert'
 TIMEFORMAT = '%Y%m%d-%H%M%S'
-#THRESHOLD1 = 5000
-THRESHOLD1 = 12000
-#THRESHOLD2 = 8000
-THRESHOLD2 = 15000
+THRESHOLD1 = 5000
+#THRESHOLD1 = 12000
+THRESHOLD2 = 8000
+#THRESHOLD2 = 15000
 
 lockfile = '/home/gb/.gb_lock/alert_sound.lock'
 sockfile = '/home/gb/.gb_sock/alert_sound.sock'
